@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\BookingController;
-
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,3 +35,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //booking
 Route::get('/booking/confirm', [App\Http\Controllers\BookingController::class, 'index'])->name('booking');
+
+
+
+
+
+
+//dashboard
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
