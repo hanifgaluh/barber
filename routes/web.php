@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\MainPage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainPageController;
+use App\Http\Controllers\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +31,7 @@ Route::get('/home', [MainPageController::class,'index']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//booking
+Route::get('/booking/confirm', [App\Http\Controllers\BookingController::class, 'index'])->name('booking');
