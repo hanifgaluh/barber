@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Staff;
 use App\Models\Booking;
 use Illuminate\Database\Seeder;
 
@@ -38,6 +39,42 @@ class DatabaseSeeder extends Seeder
             'name_hair_artis' => 'Hair Artist 1',
             'price' => 50,
 
+        ]);
+        Staff::create([
+            'name' => 'rohim',
+            'photo' => 'img',
+            'description' => 'about staff',
+            'price' => '50.000',
+            'loc_store' => 'Bandung',
+            'email' => 'awok@gmail.com',
+
+        ]);
+        Staff::create([
+            'name' => 'rohimuu',
+            'photo' => 'img',
+            'description' => 'about staff',
+            'price' => '50000',
+            'loc_store' => 'Jakarta',
+            'email' => 'ok@gmail.com',
+
+        ]);
+
+        Staff::create([
+            'name' => 'rohimuu',
+            'photo' => 'img',
+            'description' => 'about staff',
+            'price' => '50000',
+            'email' => 'awikwok@gmail.com',
+            'loc_store' => 'Jakarta',
+        ]);
+
+        Staff::create([
+            'name' => 'rohimuu',
+            'photo' => 'img',
+            'description' => 'about staff',
+            'price' => '50000',
+            'loc_store' => 'Jakarta',
+            'email' => 'awikwok@gmail.com',
         ]);
     }
 }

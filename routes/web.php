@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StaffController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,3 +44,17 @@ Route::get('/booking/confirm', [App\Http\Controllers\BookingController::class, '
 
 //dashboard
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+
+
+//staff
+Route::resource('staff', StaffController::class);
+
+Route::get('/staff', function () {
+    return view('welcome');
+});
+
+Route::get('/staff/create', [App\Http\Controllers\StaffController::class, 'index'])->name('staff.create');
+Route::get('/staff/{staff}', [App\Http\Controllers\StaffController::class, 'show'])->name('staff.show');
+Route::get('/staff/{staff}/edit', [App\Http\Controllers\StaffController::class, 'edit'])->name('staff.edit');
+
