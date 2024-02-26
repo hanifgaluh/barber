@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Staff;
 use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,24 +23,13 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Booking::create([
-            'name_customer' => 'hanif',
-            'email' => 'hanif@gmail.com',
-            'time' => '09:00:00',
-            'date' => '2024-02-13',
-            'name_hair_artis' => 'Hair Artist 1',
-            'price' => 50,
+        User::create([
+            'name' => 'jarwo',
+            'email' => 'jarwo@gmail.com',
+            'password' => 'password',
 
         ]);
-        Booking::create([
-            'name_customer' => 'galuh',
-            'email' => 'galuh@gmail.com',
-            'time' => '09:00:00',
-            'date' => '2024-02-13',
-            'name_hair_artis' => 'Hair Artist 1',
-            'price' => 50,
 
-        ]);
         Staff::create([
             'name' => 'rohim',
             'photo' => 'img',
@@ -47,7 +37,7 @@ class DatabaseSeeder extends Seeder
             'price' => '50.000',
             'loc_store' => 'Bandung',
             'email' => 'awok@gmail.com',
-
+            
         ]);
         Staff::create([
             'name' => 'rohimuu',
@@ -75,6 +65,21 @@ class DatabaseSeeder extends Seeder
             'price' => '50000',
             'loc_store' => 'Jakarta',
             'email' => 'awikwok@gmail.com',
+        ]);
+        
+        Booking::create([
+            'user_id' => auth()->id(),
+            'time' => '09:00:00',
+            'date' => '2024-02-13',
+            'price' => 50,
+        
+        ]);
+        Booking::create([
+            'user_id' => auth()->id(),
+            'time' => '09:00:00',
+            'date' => '2024-02-13',
+            'price' => 50,
+        
         ]);
     }
 }

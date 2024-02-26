@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('staff', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->string('name');
             $table->string('photo');
@@ -19,6 +20,8 @@ return new class extends Migration
             $table->integer('price');
             $table->string('loc_store');
             $table->string('email');
+            $table->date('date')->nullable();
+            $table->json('available_times')->nullable();
             $table->timestamps();
         });
     }
