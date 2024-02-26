@@ -8,7 +8,9 @@ use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StaffController;
+
 use App\Http\Controllers\StaffScheduleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,11 +34,23 @@ Route::get('/home', [MainPageController::class,'index']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/ProfileStaff/{id}', [BookingController::class,'staff']);
 
 //booking
-Route::get('/booking/confirm', [App\Http\Controllers\BookingController::class, 'index'])->name('booking');
+Route::get('/booking/confirm', [BookingController::class, 'confirm'])->name('booking');
+// Route::get('/booking/schedule', [BookingController::class, 'schedule']);
+// Route::get('/booking/location', [BookingController::class, 'location']);
+// Route::post('/filter-/location', [BookingController::class, 'filterlocation']);
+Route::get('/booking/location', [BookingController::class, 'index'])->name('location.index');
+Route::get('/booking/schedule', [BookingController::class, 'schedule'])->name('schedule');
+Route::post('/booking/schedule/store', [BookingController::class, 'storeSchedule'])->name('storeSchedule');
+Route::post('/booking', [BookingController::class, 'staffStore'])->name('booking.store');
+
+
+// Route untuk mengirimkan permintaan ke halaman lokasi
+// Route::get('/booking/location/search', [BookingController::class, 'location'])->name('location.search');
+Route::get('/booking/staff/{location}', [BookingController::class, 'Staffs'])->name('booking.staffs');
+
 
 
 
@@ -51,9 +65,7 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 //staff
 Route::resource('staff', StaffController::class);
 
-Route::get('/staff', function () {
-    return view('welcome');
-});
+
 
 Route::get('/staff/create', [App\Http\Controllers\StaffController::class, 'index'])->name('staff.create');
 Route::get('/staff/{staff}', [App\Http\Controllers\StaffController::class, 'show'])->name('staff.show');

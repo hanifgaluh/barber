@@ -110,7 +110,7 @@ class StaffController extends Controller
      * @param  \App\Models\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Staff $staff) : view
+    public function destroy(Staff $staff)
     {
         $staff->delete();
         return redirect('/staff')->with('success', 'Staff has been deleted');
