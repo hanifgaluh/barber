@@ -16,7 +16,7 @@ class StaffScheduleController extends Controller
     public function index()
     {
         $staffSchedules = StaffSchedule::with('staff')->get();
-        return view('staff-schedule.index', compact('staffSchedules'));
+        return view('appointment/staff-schedule', compact('staffSchedules'));
     }
 
     /**
