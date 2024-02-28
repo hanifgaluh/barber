@@ -18,10 +18,6 @@
         <h2>Input Data dengan Kalender</h2>
         <form>
             <div class="form-group">
-                <label for="inputNama">Nama:</label>
-                <input type="text" class="form-control" id="inputNama" placeholder="Masukkan nama">
-            </div>
-            <div class="form-group">
                 <label for="inputTanggal">Tanggal:</label>
                 <input type="text" class="form-control" id="inputTanggal" placeholder="Pilih tanggal">
             </div>

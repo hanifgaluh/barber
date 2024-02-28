@@ -8,5 +8,5 @@
 <p><strong>End Time:</strong> {{ $staffSchedule->end_time }}</p>
 
 <a href="{{ route('staff-schedule.edit', $staffSchedule->id) }}" class="btn btn-primary">Edit</a>
-<a href="{{ route('staff-schedule.index') }}" class="btn btn-secondary">Back to List</a>
+<a href="/dashboard/appointment" class="btn btn-secondary">Back to List</a>
 @endsection

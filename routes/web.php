@@ -44,7 +44,8 @@ Route::get('/booking/confirm', [BookingController::class, 'confirm'])->name('boo
 Route::get('/booking/location', [BookingController::class, 'index'])->name('location.index');
 Route::get('/booking/schedule', [BookingController::class, 'schedule'])->name('schedule');
 Route::post('/booking/schedule/store', [BookingController::class, 'storeSchedule'])->name('storeSchedule');
-Route::post('/booking', [BookingController::class, 'staffStore'])->name('booking.store');
+Route::post('/booking/barber/{staff_id}', [BookingController::class, 'staffStore'])->name('booking.store');
+
 
 
 // Route untuk mengirimkan permintaan ke halaman lokasi
@@ -73,10 +74,10 @@ Route::get('/staff/{staff}/edit', [App\Http\Controllers\StaffController::class, 
 
 Route::resource('staff-schedule', StaffScheduleController::class);
 
-Route::get('/dashboard/appointment', [StaffScheduleController::class, 'index'])->name('staff-schedule.index');
-Route::get('/dashboard/appointment/create', [StaffScheduleController::class, 'create'])->name('staff-schedule.create');
-Route::post('/dashboard/appointment', [StaffScheduleController::class, 'store'])->name('staff-schedule.store');
-Route::get('/dashboard/appointment/{id}', [StaffScheduleController::class, 'show'])->name('staff-schedule.show');
-Route::get('/dashboard/appointment/{id}/edit', [StaffScheduleController::class, 'edit'])->name('staff-schedule.edit');
-Route::put('/dashboard/appointment/{id}', [StaffScheduleController::class, 'update'])->name('staff-schedule.update');
-Route::delete('/dashboard/appointment/{id}', [StaffScheduleController::class, 'destroy'])->name('staff-schedule.destroy');
+Route::get('/dashboard/appointment/index', [StaffScheduleController::class, 'index']);
+Route::get('/dashboard/appointment/create', [StaffScheduleController::class, 'create']);
+Route::post('/dashboard/appointment/proses', [StaffScheduleController::class, 'store']);
+Route::get('/dashboard/appointment/show{id}', [StaffScheduleController::class, 'show']);
+Route::get('/dashboard/appointment/{id}/edit', [StaffScheduleController::class, 'edit']);
+Route::put('/dashboard/appointment/proses-update/{id}', [StaffScheduleController::class, 'update']);
+Route::delete('/dashboard/appointment/hapus/{id}', [StaffScheduleController::class, 'destroy']);
