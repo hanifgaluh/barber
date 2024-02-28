@@ -27,7 +27,7 @@
         .sidebar {
             position: fixed;
             left: -250px;
-            width: 200px;
+            width: 220px;
             height: 100%;
             background-color: #222;
             color: #fff;
@@ -88,7 +88,7 @@
             z-index: 1111;
             left: -195px;
             top: 17px;
-            font-size: 30px;
+            font-size: 40px;
             color: #0a5275;
             padding: 4px 9px;
             transition: all .5s ease;
@@ -209,8 +209,8 @@
             <li>
                 <a href="manager"><i class="fas fa-user-tie"></i> Manager</a>
                 <ul>
-                    <li><a href="crud-staff"><i class="fas fa-users-cog"></i> CRUD Staff</a></li>
-                    <li><a href="crud-customer"><i class="fas fa-users-cog"></i> CRUD Customer</a></li>
+                    <li><a href="manage-staff"><i class="fas fa-users-cog"></i> Manage Staff</a></li>
+                    <li><a href="manage-customer"><i class="fas fa-users-cog"></i> Manage Customer</a></li>
                     <li><a href="manage-booking"><i class="fas fa-calendar-check"></i> Manage Booking</a></li>
                     <li><a href="manage-appointment"><i class="fas fa-calendar-check"></i> Manage Appointment</a></li>
                     <li><a href="report"><i class="fas fa-chart-bar"></i> Report</a></li>
