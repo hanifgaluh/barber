@@ -8,23 +8,39 @@ class BookingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-        // return true;
+        // Atur ke true jika semua pengguna diizinkan untuk membuat booking
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'date' => 'required|date',
-            'location' => 'required|',
+            'staff_id' => 'required|exists:staff,id',
+            // Definisikan aturan validasi untuk setiap input form yang diperlukan
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'staff_id.required' => 'Pilih seorang staf untuk melakukan booking.',
+            'staff_id.exists' => 'Staf yang dipilih tidak valid.',
+            // Definisikan pesan kesalahan kustom untuk aturan validasi tertentu
         ];
     }
 }

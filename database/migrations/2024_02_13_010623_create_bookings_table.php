@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->time('time');
+            $table->time('time')->nullable();
             $table->date('date')->nullable();
             $table->foreignId('user_id')->nullable();
             $table->foreignId('staff_id')->nullable()->default(null)->constrained('staff');
-            $table->integer('price');
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

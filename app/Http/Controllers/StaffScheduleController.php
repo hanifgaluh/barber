@@ -16,7 +16,7 @@ class StaffScheduleController extends Controller
     public function index()
     {
         $staffSchedules = StaffSchedule::with('staff')->get();
-        return view('staff-schedule.index', compact('staffSchedules'));
+        return view('indexSchedule', compact('staffSchedules'));
     }
 
     /**
@@ -25,7 +25,7 @@ class StaffScheduleController extends Controller
     public function create()
     {
         $staff = StaffSchedule::pluck('name', 'id');
-        return view('staff-schedule.create', compact('staff'));
+        return view('createSchedule', compact('staff'));
     
     }
 
@@ -35,7 +35,7 @@ class StaffScheduleController extends Controller
     public function store(Request $request)
     {
         StaffSchedule::create($request->validated());
-        return redirect()->route('staff-schedule.index');
+        return redirect('/dashboard/appointment');
     }
 
     /**
@@ -43,7 +43,7 @@ class StaffScheduleController extends Controller
      */
     public function show(string $id)
     {
-        return view('staff-schedule.show', compact('staffSchedule'));
+        return view('showSchedule', compact('staffSchedule'));
     }
 
     /**
@@ -52,7 +52,7 @@ class StaffScheduleController extends Controller
     public function edit(string $id)
     {
         $staff = StaffSchedule::pluck('name', 'id');
-        return view('staff-schedule.edit', compact('staffSchedule', 'staff'));
+        return view('editSchedule', compact('staffSchedule', 'staff'));
     }
 
     /**
@@ -62,7 +62,7 @@ class StaffScheduleController extends Controller
     {
         $staffSchedule = StaffSchedule::findOrFail($id);
         $staffSchedule->update($request->validated());
-        return redirect()->route('staff-schedule.index');
+        return redirect('/dashboard/appointment');
     }
 
     /**
@@ -72,6 +72,6 @@ class StaffScheduleController extends Controller
     {
         $staffSchedule = StaffSchedule::findOrFail($id);
         $staffSchedule->delete();
-        return redirect()->route('staff-schedule.index');
+        return redirect('/dashboard/appointment');
     }
 }
