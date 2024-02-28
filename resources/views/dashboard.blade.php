@@ -27,7 +27,7 @@
         .sidebar {
             position: fixed;
             left: -250px;
-            width: 200px;
+            width: 220px;
             height: 100%;
             background-color: #222;
             color: #fff;
@@ -88,7 +88,7 @@
             z-index: 1111;
             left: -195px;
             top: 17px;
-            font-size: 30px;
+            font-size: 40px;
             color: #0a5275;
             padding: 4px 9px;
             transition: all .5s ease;
@@ -149,6 +149,42 @@
         .price-list li {
             margin-bottom: 5px;
         }
+
+        .profile-container {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        }
+
+        .profile-card {
+        flex-shrink: 0;
+        width: 200px;
+        margin-right: 16px;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        overflow: hidden;
+        background-color: 
+        }
+
+        .profile-picture {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        }
+
+        .profile-info {
+        padding: 16px;
+        }
+
+        .profile-name {
+        margin-top: 0;
+        margin-bottom: 8px;
+        }
+
+        .profile-description {
+        margin: 0;
+        color: #666;
+        }
     </style>
 </head>
 <body>
@@ -160,50 +196,32 @@
     <div class="sidebar">
         <h2>ASGAR - STUDIO</h2>
         <ul>
-            <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a href="#Appointment"><i class="fas fa-calendar-alt"></i> Appointment</a></li>
-            <li><a href="#customers"><i class="fas fa-users"></i> Customers</a></li>
-            <li><a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li>
+                <a href="staff"><i class="fas fa-users"></i> Staff</a>
+                <ul>
+                    <li><a href="manage-staff"><i class="fas fa-users-cog"></i> Manage Staff</a></li>
+                    <li><a href="manage-booking"><i class="fas fa-calendar-check"></i> Manage Booking</a></li>
+                    <li><a href="{{url('/dashboard/appointment')}}"><i class="fas fa-calendar-alt"></i> Appointment</a></li>
+                    <li><a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="manager"><i class="fas fa-user-tie"></i> Manager</a>
+                <ul>
+                    <li><a href="manage-staff"><i class="fas fa-users-cog"></i> Manage Staff</a></li>
+                    <li><a href="manage-customer"><i class="fas fa-users-cog"></i> Manage Customer</a></li>
+                    <li><a href="manage-booking"><i class="fas fa-calendar-check"></i> Manage Booking</a></li>
+                    <li><a href="manage-appointment"><i class="fas fa-calendar-check"></i> Manage Appointment</a></li>
+                    <li><a href="report"><i class="fas fa-chart-bar"></i> Report</a></li>
+                    <li><a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
     <section></section>
     <div class="content">
         <!-- Your main content will be placed here -->
-    </div>
-
-    <div class="profile">
-      <img src="asset/staff.jpg" alt="Profile Picture" class="profile-picture">
-      <div class="profile-info">
-        <h2 id="profile-name">John Doe</h2>
-        <p id="profile-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        <button id="edit-profile">Edit Profile</button>
-      </div>
-    </div>
-    <script>
-        const editProfileBtn = document.getElementById("edit-profile");
-        const profileName = document.getElementById("profile-name");
-        const profileDescription = document.getElementById("profile-description");
-
-        editProfileBtn.addEventListener("click", function() {
-        const newName = prompt("Masukkan nama baru:");
-        const newDescription = prompt("Masukkan deskripsi baru:");
-
-        if (newName) {
-            profileName.textContent = newName;
-        }
-
-        if (newDescription) {
-            profileDescription.textContent = newDescription;
-        }
-        });
-    </script>
-    <div class="price-list" id="price-list">
-      <h2>Price List</h2>
-      <ul>
-        <li>Haircut: $20</li>
-        <li>Shave: $15</li>
-        <li>Beard Trim: $10</li>
-      </ul>
     </div>
 
 </body>
