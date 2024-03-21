@@ -7,9 +7,12 @@ use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Http\Requests\BookingRequest;
 use App\Models\Staff;
+use App\Models\StaffSchedule;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+
 
 
 class BookingController extends Controller
@@ -19,7 +22,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-    
+
         return view('booking.location');
 
         // $booking = Booking::all();
@@ -74,17 +77,6 @@ class BookingController extends Controller
         //
     }
 
-    // public function location()
-    // {
-    //     return view('booking.location');
-    // }
-
-    // public function filterlocation(BookingRequest $request)
-    // {
-    //     $location = $request->input('location');
-    //     return redirect()->route('booking.staff', ['location' => $location]);
-    // }
-
     public function Staffs($location)
     {
         $staff = Staff::where('loc_store', $location)->get();
@@ -98,82 +90,125 @@ class BookingController extends Controller
         return view('profilestaff', ['staff' => $staff]);
     }
 
-
     public function staffStore(BookingRequest $request)
     {
-        
-      try {
-        $request->validate([
-          'staff_id' => 'required|exists:staff,id'
-        ]);
-    
-        // Ambil data staff yang dipilih
-        $staff = Staff::find($request->input('staff_id'));
-    
-        // Ambil data user yang sedang login
-        $user = Auth::user();
-    
-        // Simpan data booking ke tabel bookings
-        $booking = Booking::create([
-          'staff_id' => $staff->id,
-          'user_id' => $user->id,
-          // Tambahkan kolom lain yang ingin Anda isi secara langsung saat pembuatan booking di sini
-        ]);
-    
-        // Tampilkan pesan debug
-        Log::info('Debugging:', ['data' => $booking]);
-    
-        // Redirect ke halaman booking schedule
-        return redirect('/booking/schedule');
-      } catch (\Exception $e) {
-        Log::error('Error:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-        return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat membuat booking. Silakan coba lagi.']);
-      }
-    }
-    
-    
+        try {
+            $request->validate([
+                'staff_id' => 'required|exists:staff,id'
+            ]);
 
+            $staff = Staff::find($request->input('staff_id'));
+
+            $user = Auth::user();
+
+
+
+            // Simpan data staff ke dalam session untuk digunakan di halaman selanjutnya
+            $request->session()->put('booking_data', [
+                'staff_id' => $request->input('staff_id'),
+                'user_id' => $user->id,
+                'price' => $staff->price
+
+            ]);
+
+            // Redirect ke halaman berikutnya untuk mengisi tanggal dan jam
+            return redirect()->route('fill_datetime');
+        } catch (\Exception $e) {
+            Log::error('Error:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data staff. Silakan coba lagi.']);
+        }
+    }
 
     public function schedule()
     {
         return view('booking.schedule');
     }
 
-    public function storeSchedule(BookingRequest $request)
+    public function DateForm()
     {
-        // Validasi data yang diterima dari formulir
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'tanggal' => 'required|date',
-        ]);
-
-        // Simpan data ke dalam database menggunakan model
-        Booking::create([
-            'nama' => $validatedData['nama'],
-            'tanggal' => $validatedData['tanggal'],
-            // tambahkan kolom lainnya sesuai kebutuhan
-        ]);
-
-        // Redirect ke halaman yang sesuai setelah berhasil menyimpan data
-        return redirect()->route(''); // Gantilah nama-route-yang-diinginkan dengan nama route yang Anda inginkan
+        return view('booking.scheduleDate');
     }
 
-    // public function getAvailableTimes(BookingRequest $request)
-    // {
-    //     $date = $request->input('date');
+    public function submitDateForm(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
 
-    //     // Mengambil jadwal berdasarkan tanggal yang dipilih
-    //     $schedule = Booking::where('date', $date)->first();
+        // Ambil data yang sudah disimpan dari session booking_data
+        $bookingData = $request->session()->get('booking_data', []);
 
-    //     if ($schedule) {
-    //         $availableTimes = $schedule->time_available_times;
-    //     } else {
-    //         // Jika tidak ada jadwal untuk tanggal yang dipilih, return jam kosong
-    //         $availableTimes = [];
-    //     }
+        // Tambahkan atau perbarui data tanggal yang baru
+        $bookingData['date'] = $request->input('date');
 
-    //     return response()->json(['available_times' => $availableTimes]);
-    // }
+        // Simpan kembali data booking_data yang sudah diperbarui ke dalam session
+        $request->session()->put('booking_data', $bookingData);
+
+
+        return redirect('/fill_time');
+    }
+
+
+    public function TimeForm(Request $request)
+    {
+        // Pastikan bahwa staff_id telah diset sebelumnya, jika tidak, redirect kembali ke halaman pilih staff
+        if (!$request->session()->has('booking_data')) {
+            return redirect()->route('booking');
+        }
+
+        // Ambil staff_id dari sesi
+        $booking_data = $request->session()->get('booking_data');
+        $staff_id = $booking_data['staff_id'];
+        $date = $booking_data['date'];
+
+        // Mengambil waktu yang telah digunakan pada tanggal tersebut untuk staff_id tertentu
+        $used_times = Booking::where('staff_id', $staff_id)
+            ->whereDate('date', $date)
+            ->pluck('time');
+
+        // Mengambil waktu yang tersedia dari tabel staff_schedule untuk staff_id dan tanggal tertentu
+        $available_times = StaffSchedule::where('staff_id', $staff_id)
+            ->whereNotIn('time', $used_times->toArray())
+            ->pluck('time');
+
+        return view('booking.scheduleTime', compact('available_times', 'used_times', 'date'));
+    }
+
+
+
+    public function submitTimeForm(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'time' => 'required',
+        ]);
+    
+        // Ambil data booking dari session
+        $booking_data = $request->session()->get('booking_data');
+        $staff_id = $booking_data['staff_id'];
+        $user_id = $booking_data['user_id'];
+        $price = $booking_data['price'];
+        $date = $booking_data['date'];
+    
+        // Simpan data booking ke dalam database
+        $booking = new Booking();
+        $booking->staff_id = $staff_id;
+        $booking->user_id = $user_id;
+        $booking->price = $price;
+        $booking->date = $date;
+        $booking->time = $validatedData['time'];
+        // Isi kolom lainnya sesuai kebutuhan
+        $booking->save();
+    
+        // Hapus data booking dari session
+        $request->session()->forget('booking_data');
+    
+        // Redirect atau lakukan tindakan lain setelah menyimpan data
+        return redirect()->route('booking')->with('success', 'Booking berhasil disimpan.');
+    }
+    
+
+
 
     public function location(BookingRequest $request)
     {
@@ -189,20 +224,7 @@ class BookingController extends Controller
         }
     }
 
-    // public function locationBandung()
-    // {
-    //     $location = Staff::where('loc_store','LIKE','jakarta')->get();
-    //     return view('booking.bandung', ['staff' => collect(), 'location' => $location]);
-    // }
-
-    public function locationJakarta()
-    {
-        $location = 'jakarta';
-        return view('booking.location', ['staff' => collect(), 'location' => $location]);
-    }
-
     public function confirm()
     {
-        $user = auth()->user();
     }
 }

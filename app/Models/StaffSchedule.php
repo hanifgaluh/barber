@@ -9,10 +9,8 @@ class StaffSchedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'staff_id',
-        'start_time',
-        'end_time',
+    protected $guarded = [
+        'id'
     ];
 
     public function staff()

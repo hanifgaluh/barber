@@ -45,6 +45,11 @@ Route::get('/booking/location', [BookingController::class, 'index'])->name('loca
 Route::get('/booking/schedule', [BookingController::class, 'schedule'])->name('schedule');
 Route::post('/booking/schedule/store', [BookingController::class, 'storeSchedule'])->name('storeSchedule');
 Route::post('/booking/barber/{staff_id}', [BookingController::class, 'staffStore'])->name('booking.store');
+Route::get('/fill_datetime', [BookingController::class, 'DateForm'])->name('fill_datetime');
+Route::post('/submit_date', [BookingController::class, 'submitDateForm'])->name('submit_date');
+Route::get('/fill_time', [BookingController::class, 'TimeForm'])->name('fill_time');
+Route::post('/submit_time', [BookingController::class, 'submitTimeForm'])->name('submit_time');
+
 
 
 
@@ -81,3 +86,4 @@ Route::get('/dashboard/appointment/show{id}', [StaffScheduleController::class, '
 Route::get('/dashboard/appointment/{id}/edit', [StaffScheduleController::class, 'edit']);
 Route::put('/dashboard/appointment/proses-update/{id}', [StaffScheduleController::class, 'update']);
 Route::delete('/dashboard/appointment/hapus/{id}', [StaffScheduleController::class, 'destroy']);
+Route::post('/submit-form', [StaffScheduleController::class, 'submitForm'])->name('submit-form');
