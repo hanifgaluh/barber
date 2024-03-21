@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StaffSchedule;
+use App\Models\Staff;
 use App\Http\Requests\StoreStaffScheduleRequest;
 use App\Http\Requests\UpdateStaffScheduleRequest;
 use Illuminate\Http\Request;
@@ -26,8 +27,8 @@ class StaffScheduleController extends Controller
      */
     public function create()
     {
-        $staff = StaffSchedule::pluck('name', 'id');
-        return view('createSchedule', compact('staff'));
+        $staffs = Staff::pluck('name', 'id');
+        return view('createSchedule', compact('staffs'));
     
     }
 
@@ -75,5 +76,25 @@ class StaffScheduleController extends Controller
         $staffSchedule = StaffSchedule::findOrFail($id);
         $staffSchedule->delete();
         return redirect('/dashboard/appointment');
+    }
+
+    public function submitForm(Request $request)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        // Create a new instance of StaffSchedule model
+        $staffSchedule = new StaffSchedule();
+        $staffSchedule->staff_id = $validatedData['staff_id'];
+        $staffSchedule->time = $validatedData['time'];
+
+        // Save the staff schedule to the database
+        $staffSchedule->save();
+
+        // Redirect back to form or any other page
+        return redirect()->back()->with('success', 'Form submitted successfully!');
     }
 }
