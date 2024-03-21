@@ -182,31 +182,21 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'time' => 'required',
         ]);
-    
+
+        // Ambil data yang sudah disimpan dari session booking_data
+        $bookingData = $request->session()->get('booking_data', []);
+
+        // Tambahkan atau perbarui data tanggal yang baru
+        $bookingData['time'] = $request->input('time');
+
         // Ambil data booking dari session
-        $booking_data = $request->session()->get('booking_data');
-        $staff_id = $booking_data['staff_id'];
-        $user_id = $booking_data['user_id'];
-        $price = $booking_data['price'];
-        $date = $booking_data['date'];
-    
-        // Simpan data booking ke dalam database
-        $booking = new Booking();
-        $booking->staff_id = $staff_id;
-        $booking->user_id = $user_id;
-        $booking->price = $price;
-        $booking->date = $date;
-        $booking->time = $validatedData['time'];
-        // Isi kolom lainnya sesuai kebutuhan
-        $booking->save();
-    
-        // Hapus data booking dari session
-        $request->session()->forget('booking_data');
-    
+
+        $request->session()->put('booking_data', $bookingData);
+
         // Redirect atau lakukan tindakan lain setelah menyimpan data
         return redirect()->route('booking')->with('success', 'Booking berhasil disimpan.');
     }
-    
+
 
 
 
@@ -224,7 +214,46 @@ class BookingController extends Controller
         }
     }
 
-    public function confirm()
+    public function confirm(Request $request)
     {
+        $booking_data = $request->session()->get('booking_data');
+        $staff_id = $booking_data['staff_id'];
+        $user_id = $booking_data['user_id'];
+        $price = $booking_data['price'];
+        $date = $booking_data['date'];
+        $time = $booking_data['time'];
+
+        $user = User::find($user_id);
+        $email = $user->email;
+
+        // Mengakses data staf berdasarkan staff_id
+        $staff = Staff::find($staff_id);
+        $store = $staff->loc_store;
+
+    // Mengirim data ke tampilan
+    return view('booking.confirm', compact('user', 'staff', 'price', 'date', 'time'));
+
+    }
+
+    public function submitconfirm(Request $request)
+    {
+        $booking_data = $request->session()->get('booking_data');
+        $staff_id = $booking_data['staff_id'];
+        $user_id = $booking_data['user_id'];
+        $price = $booking_data['price'];
+        $date = $booking_data['date'];
+        $time = $booking_data['time'];
+
+        // Simpan data booking ke dalam database
+        $booking = new Booking();
+        $booking->staff_id = $staff_id;
+        $booking->user_id = $user_id;
+        $booking->price = $price;
+        $booking->date = $date;
+        $booking->time = $time;
+        // Isi kolom lainnya sesuai kebutuhan
+        $booking->save();
+
+        return redirect('/home');
     }
 }

@@ -38,6 +38,7 @@ Route::get('/ProfileStaff/{id}', [BookingController::class,'staff']);
 
 //booking
 Route::get('/booking/confirm', [BookingController::class, 'confirm'])->name('booking');
+Route::post('/cubmitconfirm', [BookingController::class, 'submitconfirm'])->name('confirm');
 // Route::get('/booking/schedule', [BookingController::class, 'schedule']);
 // Route::get('/booking/location', [BookingController::class, 'location']);
 // Route::post('/filter-/location', [BookingController::class, 'filterlocation']);
